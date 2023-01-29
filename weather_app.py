@@ -1,37 +1,17 @@
 import streamlit as st
-from plotly import graph_objects as go
-import plotly.figure_factory as ff
-import numpy as np
-import requests
-from datetime import datetime , timedelta
-import matplotlib.pyplot as plt
-from sklearn.metrics import mean_absolute_error
-import time 
-from PIL import Image
-
-from  matplotlib.ticker import PercentFormatter
-import matplotlib.pyplot as plt
-from streamlit_folium import folium_static
-import os
-import xgboost as xgb
-from sklearn.model_selection import train_test_split
-from yellowbrick.regressor.alphas import alphas
-from streamlit_folium import folium_static
-from folium.plugins import HeatMap
-import streamlit as st
 import pandas as pd
-from prophet import Prophet
-#from sklearn.model_selection import train_test_split
-from sklearn.metrics import mean_squared_error, r2_score
 import requests
-import base64
+import matplotlib.pyplot as plt
 from matplotlib.pyplot import figure
 import plotly.graph_objects as go
-from datetime import datetime
+from datetime import datetime, timedelta
+import plotly.graph_objects as go
+import plotly.colors as colors
+from sklearn.metrics import mean_absolute_error
+import numpy as np
 from PIL import Image
 from io import BytesIO
-import plotly.express as px
-import requests
+import xgboost as xgb
 import re
 
 
