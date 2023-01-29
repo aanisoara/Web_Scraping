@@ -8,8 +8,8 @@ import matplotlib.pyplot as plt
 from sklearn.metrics import mean_absolute_error
 import time 
 from PIL import Image
-import seaborn as sns
-sns.set_style("whitegrid")
+#import seaborn as sns
+#sns.set_style("whitegrid")
 from  matplotlib.ticker import PercentFormatter
 import matplotlib.pyplot as plt
 from streamlit_folium import folium_static
