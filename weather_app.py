@@ -60,13 +60,18 @@ if page == 'Presentation':
     st.markdown("<h1 style='text-align: center; color: black; font-size:25px; border-radius:2%;'>Machine Learning Application for weather forcast</h1>", unsafe_allow_html=True)
     st.markdown("<h2 style='text-align: center; color: ; font-size:20px;'>Members: ABABII Anisoara, LAAUMARI Oussama, ZAHI Camil </h2>", unsafe_allow_html=True)
     st.write("""
+    <div style="text-align:justify">
     In this Application for forcasting weather, the *XGBoostRegressor()* function is used  for build a regression model using the **XGBoost** algorithm.
-    Try it, you'll be love!
-    """)
-    st.markdown("<h2 style='text-align: center; color: ; font-size:20px;'>Description of Weather Underground service </h2>", unsafe_allow_html=True)
+    </div>
+    """, unsafe_allow_html=True)
+    st.markdown("<h2 style='text-align: center; color:red ; font-size:20px;'>Try it, you'll be love! </h2>", unsafe_allow_html=True)
+    st.markdown("<h2 style='text-align: center; color:blue ; font-size:20px;'>Description of Weather Underground service </h2>", unsafe_allow_html=True)
     st.write("""
+    <div style="text-align:justify">
     Weather Underground is a commercial weather service providing real-time weather information over the Internet. Weather Underground provides weather reports for most major cities around the world on its Web site, as well as local weather reports for newspapers and third-party sites. Its information comes from the National Weather Service (NWS), and over 250,000 personal weather stations (PWS). The site is available in many languages, and customers can access an ad-free version of the site with additional features for an annual fee. Weather Underground is owned by The Weather Company, a subsidiary of IBM.
-    """)
+    </div>
+    """, unsafe_allow_html=True)
+
     st.image("weather.jpg", width=700, use_column_width=False)
     if uploaded_file is not None:
         #st.write('You selected `%s`' % filename)
@@ -138,29 +143,28 @@ elif page == 'Modelisation':
         test = test[['Date','Temp_avg']]
         test = test.rename(columns={'Date':'ds','Temp_avg':'y'})
 
-        m = Prophet(interval_width=0.95)
-        model = m.fit(train)
+        #m = Prophet(interval_width=0.95)
+        #model = m.fit(train)
 
-        future = m.make_future_dataframe(periods=len(test))
-        forecast = m.predict(future)
+        #future = m.make_future_dataframe(periods=len(test))
+        #forecast = m.predict(future)
 
         test['y'] = test['y'].astype(float)
+        st.subheader('2. Model Performance XGBoost')
 
-        st.markdown('1.1 . Model Péerformance')
+        #forecast_test = forecast.iloc[-len(test):]['yhat']
+        #rmspe = np.sqrt(np.mean((test['y'] - forecast_test) ** 2))
+        #st.write('RMSPE')
+        #st.info(rmspe)
 
-        forecast_test = forecast.iloc[-len(test):]['yhat']
-        rmspe = np.sqrt(np.mean((test['y'] - forecast_test) ** 2))
-        st.write('RMSPE')
-        st.info(rmspe)
+        #forecast_test = forecast.iloc[-len(test):]['yhat']
+        #mae = mean_absolute_error(test['y'], forecast_test)
+        #st.write('MAE for forcasting test dataset: Prophet model')
+        #st.info(mae)
 
-        forecast_test = forecast.iloc[-len(test):]['yhat']
-        mae = mean_absolute_error(test['y'], forecast_test)
-        st.write('MAE for forcasting test dataset')
-        st.info(mae)
-
-        # PLOT  ??
-        plot1 = m.plot(forecast)
-        st.write(plot1)
+        # PLOT  prophet
+        #plot1 = m.plot(forecast)
+        #st.write(plot1)
 
         train = df[:int(len(df)*0.8)]
         test = df[int(len(df)*0.8):]
@@ -201,7 +205,6 @@ elif page == 'Modelisation':
                 eval_set=[(X_train, y_train), (X_test, y_test)],
                 verbose=100)
 
-        st.subheader('2. Model Performance')
 
         fi = pd.DataFrame(data=reg.feature_importances_,
                     index=reg.feature_names_in_,
@@ -209,6 +212,7 @@ elif page == 'Modelisation':
         fi.sort_values('importance').plot(kind='barh', title='Feature Importance')
         plt.show()
 
+        st.markdown('Model Péerformance and predicted data plot')
         ypred = reg.predict(X_test)
         fig, x_ax = plt.subplots()
         x_ax =pd.DataFrame(X_test.index)
@@ -226,13 +230,14 @@ elif page == 'Modelisation':
         st.write('Coefficient of determination ($R^2$):')
         st.info( r2_score(y_train, Y_pred_train) )
 
-        st.write('Error: Mean Absolute Error (MAE):')
-        st.info( mean_absolute_error(y_test, ypred) )
-
         st.markdown('2.2. Prediction on Test set')
         ypred = reg.predict(X_test)
         st.write('Coefficient of determination ($R^2$):')
         st.info( r2_score(y_test, ypred) )
+
+        st.markdown('2.3. Prediction Error')
+        st.write('Error: Mean Absolute Error (MAE):')
+        st.info( mean_absolute_error(y_test, ypred) )
 
      ############################ Predicted temperature plot ########################################
         
@@ -301,7 +306,7 @@ else:
                     {'range': [20, 40], 'color': 'red'}
                 ]}
     ))
-
+    
     st.plotly_chart(fig)
     st.image("thanks.jpg")
 
