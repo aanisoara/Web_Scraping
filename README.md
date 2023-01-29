@@ -6,4 +6,4 @@ The next step is to perform feature engineering by creating new variables from e
 
 It is essential to use PySpark in the feature engineering part. Then, we will use both PySpark and pandas (if PySpark is not installed on your machine) for preprocessing and creating new features.
 
-The final deliverable will be a Python notebook and a Streamlit dashboard. The dashboard will contain a presentation page of the website and data source where the user can choose a curated dataset scraped (e.g. New York, Paris, Milan, etc.), a modeling page for forecasting weather for the chosen dataset, and a page with the actual temperature, which allows us to compare our prediction error.x
+The final deliverable will be a Python notebook and a Streamlit dashboard. The dashboard will contain a presentation page of the website and data source where the user can choose a curated dataset scraped (e.g. New York, Paris, Milan, etc.), a modeling page for forecasting weather for the chosen dataset, and a page with the actual temperature, which allows us to compare our prediction error.
