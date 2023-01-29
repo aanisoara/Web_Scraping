@@ -303,13 +303,19 @@ else:
                 predictions.append(temperature)
             df = pd.DataFrame({'Date': [today + timedelta(days=i) for i in range(7)],
                                 'Temperature': predictions})
+            df["Advice"] = df["Temperature"].apply(lambda x: "☃️ Il fait plus froid que dans un congélateur à légumes! Température : " + str(x) + "°C" if x < 0 
+                else "❄️ N'oubliez pas de vous couvrir chaudement, il fait froid comme dans un frigo en panne! Température : " + str(x) + "°C" if x >= 0 and x < 5 
+                else "🌬 Il fait frais, vous pouvez sortir sans risque de fondre comme une glace au soleil! Température : " + str(x) + "°C" if x >= 5 and x < 10 
+                else "🌤 Il fait agréable, sortez profiter de cette belle journée! Température : " + str(x) + " °C" if x >= 10 and x < 20 
+                else "🔥 Attention aux coups de chaud, n'oubliez pas de vous hydrater régulièrement! Température : " + str(x) + "°C" if x >= 20 and x < 30 
+                else "☀️ Mieux vaut rester à l'ombre, c'est plus chaud que dans un sauna! Température : " + str(x) + "°C" if x >= 30 else "☀️ Il fait chaud, n'oubliez pas de vous hydrater et de vous protéger du soleil ! Température : " + str(x) + "°C")
             return df
 
     fig4 = go.Figure(go.Indicator(
         mode = "gauge+number+delta",
         value = weather_week(city_name)['Temperature'][0],
         domain = {'x': [0, 1], 'y': [0, 1]},
-        title = {'text': "Temperature (°C) prédite selon le modèle de weatherapi", 'font': {'size': 24}},
+        title = {'text': "Actual Temperature (°C) using weatherapi model", 'font': {'size': 24}},
         gauge = {'axis': {'range': [-40, 40]},
                 'bar': {'color': "red"},
                 'steps' : [
@@ -320,4 +326,6 @@ else:
                 ]}
     ))
     st.plotly_chart(fig4)
+    week_pred_api = weather_week(city_name)
+    st.write(week_pred_api["Advice"][0])   
     st.image("thanks.jpg")
