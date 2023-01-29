@@ -283,20 +283,33 @@ elif page == 'Modelisation':
     st.write(dataframe.describe())
     build_model(dataframe)  
 else:
-    
+    if uploaded_file is not None:
+        dataframe = pd.read_csv(uploaded_file)
+        file_path = filename
+        city_name = re.search(r'Data\\(.*?)\.csv', file_path).group(1)
+
     #Gather weather data
-    api_key = 'f15d6887ef0449fa9f695040232701'
+        def weather_week(selected_city):
+            city = selected_city
+            api_key = 'f15d6887ef0449fa9f695040232701'
+            url = f"http://api.weatherapi.com/v1/forecast.json?key={api_key}&q={city}&days=7"
+            response = requests.get(url)
+            data = response.json()
+            today = datetime.now()
+            predictions = []
+            for i in range(7):
+                date = today + timedelta(days=i)
+                temperature = data['forecast']['forecastday'][i]['day']['avgtemp_c']
+                predictions.append(temperature)
+            df = pd.DataFrame({'Date': [today + timedelta(days=i) for i in range(7)],
+                                'Temperature': predictions})
+            return df
 
-    url = f"http://api.weatherapi.com/v1/forecast.json?key={api_key}&q=07112&days=7"
-    response = requests.get(url)
-    data = response.json()
-    temp = data['current']['temp_c']
-
-    fig = go.Figure(go.Indicator(
+    fig4 = go.Figure(go.Indicator(
         mode = "gauge+number+delta",
-        value = temp,
+        value = weather_week(city_name)['Temperature'][0],
         domain = {'x': [0, 1], 'y': [0, 1]},
-        title = {'text': " Curent Temperature (°C)", 'font': {'size': 24}},
+        title = {'text': "Temperature (°C) prédite selon le modèle de weatherapi", 'font': {'size': 24}},
         gauge = {'axis': {'range': [-40, 40]},
                 'bar': {'color': "red"},
                 'steps' : [
@@ -306,11 +319,5 @@ else:
                     {'range': [20, 40], 'color': 'red'}
                 ]}
     ))
-    
-    st.plotly_chart(fig)
+    st.plotly_chart(fig4)
     st.image("thanks.jpg")
-
-
-
-
-
